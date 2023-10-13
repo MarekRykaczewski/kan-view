@@ -7,11 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        "backgroundOne": '#1d2127',
-        "backgroundTwo": '#43474E',
-        "backgroundThree": '#6D7178',
-        "backgroundFour": '#999EA6',
-        "backgroundFive": '#C9CED6',
+        "shadeOne": '#1d2127',
+        "shadeTwo": '#43474E',
+        "shadeThree": '#6D7178',
+        "shadeFour": '#999EA6',
+        "shadeFive": '#C9CED6',
         "textMain": '#e0dfdf',
         "accentMain": '#1f4dfe'
       }
