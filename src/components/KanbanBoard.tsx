@@ -1,4 +1,4 @@
-import PlusIcon from "../icons/PlusIcon"
+import PlusIcon from '../icons/PlusIcon';
 
 function KanbanBoard() {
   return (
@@ -10,7 +10,7 @@ function KanbanBoard() {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default KanbanBoard
+export default KanbanBoard;
