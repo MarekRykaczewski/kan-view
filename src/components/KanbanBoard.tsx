@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import PlusIcon from '../icons/PlusIcon';
-import { Column } from '../types';
+import { Column, Task } from '../types';
 import ColumnContainer from './ColumnContainer';
 import {
   DndContext,
@@ -18,6 +18,7 @@ function KanbanBoard() {
   const [columns, setColumns] = useState<Column[]>([]);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+  const [tasks, setTasks] = useState<Task>([]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -48,6 +49,21 @@ function KanbanBoard() {
     });
 
     setColumns(newColumns);
+  }
+
+  function createTask(columnId: Id) {
+    const newTask: Task = {
+      id: generateId(),
+      columnId,
+      content: `Task ${tasks.length + 1}`,
+    };
+
+    setTasks([...tasks, newTask]);
+  }
+
+  function deleteTask(id: Id) {
+    const newTasks = tasks.filter((task) => task.id !== id);
+    setTasks(newTasks);
   }
 
   function generateId() {
@@ -101,6 +117,9 @@ function KanbanBoard() {
                   column={col}
                   deleteColumn={deleteColumn}
                   updateColumn={updateColumn}
+                  createTask={createTask}
+                  deleteTask={deleteTask}
+                  tasks={tasks.filter((task) => task.columnId === col.id)}
                 />
               ))}
             </SortableContext>
@@ -122,6 +141,9 @@ function KanbanBoard() {
                 column={activeColumn}
                 deleteColumn={deleteColumn}
                 updateColumn={updateColumn}
+                createTask={createTask}
+                deleteTask={deleteTask}
+                tasks={tasks.filter((task) => task.columnId === col.id)}
               />
             )}
           </DragOverlay>,
