@@ -41,6 +41,15 @@ function KanbanBoard() {
     setColumns(filteredColumns);
   }
 
+  function updateColumn(id: Id, title: string) {
+    const newColumns = columns.map((col) => {
+      if (col.id !== id) return col;
+      return { ...col, title };
+    });
+
+    setColumns(newColumns);
+  }
+
   function generateId() {
     return Math.floor(Math.random() * 10000);
   }
@@ -91,6 +100,7 @@ function KanbanBoard() {
                   key={col.id}
                   column={col}
                   deleteColumn={deleteColumn}
+                  updateColumn={updateColumn}
                 />
               ))}
             </SortableContext>
@@ -111,6 +121,7 @@ function KanbanBoard() {
               <ColumnContainer
                 column={activeColumn}
                 deleteColumn={deleteColumn}
+                updateColumn={updateColumn}
               />
             )}
           </DragOverlay>,

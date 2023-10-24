@@ -9,3 +9,15 @@ body,
   color: white;
   box-sizing: border-box;
 }
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-accentMain rounded-xl;
+}
