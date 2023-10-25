@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import PlusIcon from '../icons/PlusIcon';
-import { Column, Task } from '../types';
+import { Column, Id, Task } from '../types';
 import ColumnContainer from './ColumnContainer';
 import {
   DndContext,
@@ -61,6 +61,14 @@ function KanbanBoard() {
     setTasks([...tasks, newTask]);
   }
 
+  function updateTask(id: Id, content: string) {
+    const newTasks = tasks.map((task) => {
+      if (task.id !== id) return task;
+      return { ...task, content };
+    });
+    setTasks(newTasks);
+  }
+
   function deleteTask(id: Id) {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
@@ -119,6 +127,7 @@ function KanbanBoard() {
                   updateColumn={updateColumn}
                   createTask={createTask}
                   deleteTask={deleteTask}
+                  updateTask={updateTask}
                   tasks={tasks.filter((task) => task.columnId === col.id)}
                 />
               ))}
@@ -143,6 +152,7 @@ function KanbanBoard() {
                 updateColumn={updateColumn}
                 createTask={createTask}
                 deleteTask={deleteTask}
+                updateTask={updateTask}
                 tasks={tasks.filter(
                   (task) => task.columnId === activeColumn.id,
                 )}
