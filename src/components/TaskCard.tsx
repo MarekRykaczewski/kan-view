@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import TrashIcon from '../icons/TrashIcon';
 import { Id, Task } from '../types';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Props {
   task: Task;
@@ -12,14 +14,51 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: {
+      type: 'Task',
+      task,
+    },
+    disabled: editMode,
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
+
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
     setMouseIsOver(false);
   };
 
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="bg-shadeOne opacity-50 p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-accentMain cursor-grab relative"
+      />
+    );
+  }
+
   if (editMode) {
     return (
-      <div className="bg-shadeOne p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-accentMain cursor-grab relative task">
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="bg-shadeOne p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-accentMain cursor-grab relative"
+      >
         <textarea
           value={task.content}
           autoFocus
@@ -37,6 +76,10 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
       onClick={toggleEditMode}
       onMouseEnter={() => setMouseIsOver(true)}
       onMouseLeave={() => setMouseIsOver(false)}
